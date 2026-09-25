@@ -110,7 +110,7 @@ for idx, row in grid_data.iterrows():
                     if chunk:
                         f.write(chunk)
 
-            # Assign spatial reference to the downloaded TIFF using our calculated dimensions
+            # Assign spatial reference to the downloaded TIFF using calculated dimensions
             with rasterio.open(image_output, 'r+') as dataset:
                 dataset.crs = CRS.from_epsg(3338)
                 dataset.transform = from_bounds(

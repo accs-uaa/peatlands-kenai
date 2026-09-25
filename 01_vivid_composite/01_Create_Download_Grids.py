@@ -66,7 +66,7 @@ grid_records = []
 # Loop through columns (X) and rows (Y)
 for col in range(num_cols):
     for row in range(num_rows):
-        # Calculate geometric bounds for this specific cell
+        # Calculate geometric bounds for specific cell
         c_xmin = start_x + (col * dimension_m)
         c_ymin = start_y + (row * dimension_m)
         c_xmax = c_xmin + dimension_m
@@ -75,7 +75,7 @@ for col in range(num_cols):
         # Create polygon geometry
         grid_poly = box(c_xmin, c_ymin, c_xmax, c_ymax)
 
-        # Create a unique grid code
+        # Create unique grid code
         grid_code = f'C{col + 1:03d}R{num_rows - row:03d}'
 
         # Append attributes and geometry
@@ -84,14 +84,14 @@ for col in range(num_cols):
             'geometry': grid_poly
         })
 
-# Convert records to a GeoDataFrame
+# Convert records to geodataframe
 grid_data = gpd.GeoDataFrame(grid_records, crs=crs_3338)
 
-# Perform spatial join to retain ONLY grids that intersect the map domain
+# Perform spatial join to retain grids that intersect the map domain
 print(f'Filtering grids to intersect with map domain...')
 grid_data = gpd.sjoin(grid_data, domain_data, how='inner', predicate='intersects')
 
-# Drop duplicated columns resulting from the spatial join
+# Drop duplicated columns from the spatial join
 grid_data = grid_data.drop(columns=['index_right'])
 
 # Calculate geometric length (perimeter) and area
@@ -101,7 +101,7 @@ grid_data['shape_area'] = grid_data.geometry.area
 # Restrict fields for export
 grid_data = grid_data[export_fields]
 
-# Save selected grids to shapefile
+# Save selected grids
 print(f'Saving generated grids to {os.path.basename(grid_output)}...')
 grid_data.to_file(grid_output)
 end_timing(start_time)

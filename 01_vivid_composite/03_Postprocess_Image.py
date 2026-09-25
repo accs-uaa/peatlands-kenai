@@ -21,7 +21,7 @@ from akutils import *
 # Configure GDAL
 gdal.UseExceptions()
 
-# Define no data
+# Define nodata value
 nodata_value = -32768
 
 #### SET UP DIRECTORIES, FILES, AND FIELDS
@@ -98,10 +98,9 @@ if not os.path.exists(merged_intermediate):
     # Define input files
     input_files = glob.glob(f'{input_folder}/*.tif')
 
-    # Merge tiles
+    # Merge raster tiles
     print(f'Merging {len(input_files)} tiles...')
     start_time = time.time()
-    # Merge raster tiles
     gdal.BuildVRT(vrt_intermediate,
                   input_files,
                   outputSRS='EPSG:3338',
@@ -130,7 +129,7 @@ if not os.path.exists(merged_intermediate):
     # Prepare raster data
     image_raster = rasterio.open(vrt_intermediate)
 
-    # Post-process floodplain raster
+    # Post-process image raster
     with rasterio.open(merged_intermediate, 'w', **output_profile) as dst:
         # Find number of raster blocks
         window_list = []
@@ -140,16 +139,16 @@ if not os.path.exists(merged_intermediate):
         count = 1
         progress = 0
         for block_index, window in area_raster.block_windows(1):
-            # Read area block as 3D array (1, height, width) for smooth 4-band broadcasting
+            # Read area block as 3D array (1, height, width) for 4-band data
             area_block = area_raster.read(window=window)
 
-            # Read 4 bands using the identical grid window
+            # Read 4 bands using the grid window
             image_block = image_raster.read(window=window, out_dtype='int16')
 
             # Enforce study area boundary
             image_block = np.where(area_block == 1, image_block, nodata_value)
 
-            # Write 4 band output
+            # Write 4-band output
             dst.write(image_block, window=window)
 
             # Report progress

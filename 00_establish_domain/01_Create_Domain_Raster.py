@@ -48,7 +48,7 @@ resolution_m = 1.0
 domain_data = gpd.read_file(domain_input)
 xmin, ymin, xmax, ymax = domain_data.total_bounds
 
-# Snap bounds to align perfectly with the 0,0 origin
+# Snap bounds to align with the 0,0 origin
 snap_xmin = math.floor(xmin / resolution_m) * resolution_m
 snap_ymin = math.floor(ymin / resolution_m) * resolution_m
 snap_xmax = math.ceil(xmax / resolution_m) * resolution_m
