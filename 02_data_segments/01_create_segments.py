@@ -16,8 +16,7 @@ from akutils import *
 
 # Define paths
 ee_project = 'akveg-map'
-storage_bucket = 'akveg-data'
-storage_prefix = 'regional_kenai'
+storage_bucket = 'regional-kenai'
 
 # Authenticate with Earth Engine
 print('Requesting information from server...')
@@ -25,8 +24,8 @@ ee.Authenticate()
 ee.Initialize(project=ee_project)
 
 # Define inputs and outputs
-image_input = f'gs://{storage_bucket}/{storage_prefix}/imagery/vivid2023_1m_3338.tif'
-region_input = f'projects/{ee_project}/assets/study_areas/LowerKenai_MapDomain_3338'
+image_input = f'gs://{storage_bucket}/image_data/vivid2023_1m_3338.tif'
+region_input = f'projects/{ee_project}/assets/study_areas/lowerkenai_domain_3338'
 
 # Set target resolution
 scale = 1
