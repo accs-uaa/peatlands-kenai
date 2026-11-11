@@ -84,8 +84,8 @@ if not os.path.exists(masked_intermediate):
     # Convert VRT to raster for WhiteboxTools
     print('Converting VRT to GeoTIFF...')
     start_time = time.time()
-    merge_ds = gdal.Translate(merged_intermediate, merged_vrt, creationOptions=['BIGTIFF=YES'])
-    merge_ds = None
+    merged_ds = gdal.Translate(merged_intermediate, merged_vrt, creationOptions=['BIGTIFF=YES'])
+    merged_ds = None
     end_timing(start_time)
 
     # Run WhiteboxTools Clump (Connected Component Labeling)
